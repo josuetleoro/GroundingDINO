@@ -140,7 +140,6 @@ subs/
 logs/
 
 grounding/config/configs
-grounding/version.py
 
 vis/
 tmp/
