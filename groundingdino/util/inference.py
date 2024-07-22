@@ -262,10 +262,20 @@ class Model:
     def phrases2classes(phrases: List[str], classes: List[str]) -> np.ndarray:
         class_ids = []
         for phrase in phrases:
-            for class_ in classes:
-                if class_ in phrase:
-                    class_ids.append(classes.index(class_))
-                    break
-            else:
+            try:
+                # class_ids.append(classes.index(phrase))
+                class_ids.append(Model.find_index(phrase, classes))
+            except ValueError:
                 class_ids.append(None)
         return np.array(class_ids)
+
+    @staticmethod
+    def find_index(string, lst):
+        # if meet string like "lake river" will only keep "lake"
+        # this is an hack implementation for visualization which will be updated in the future
+        string = string.lower().split()[0]
+        for i, s in enumerate(lst):
+            if string in s.lower():
+                return i
+        print("There's a wrong phrase happen, this is because of our post-process merged wrong tokens, which will be modified in the future. We will assign it with a random label at this time.")
+        return 0
